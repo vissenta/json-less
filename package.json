@@ -1,0 +1,33 @@
+{
+  "name": "json-less",
+  "version": "0.1.0",
+  "description": "JSON",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
+    "coverage": "./node_modules/.bin/istanbul cover _mocha -- -R spec",
+    "gh-pages-docs": "./node_modules/.bin/jsdoc -c ./.jsdocrc -r -R ./README.md -d ../../gh-pages/json-less/ src/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ponury-kostek/json-less.git"
+  },
+  "author": "Michał Żaloudik <ponury.kostek@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ponury-kostek/json-less/issues"
+  },
+  "homepage": "https://github.com/ponury-kostek/json-less#readme",
+  "devDependencies": {
+    "coveralls": "^2.11.6",
+    "ink-docstrap": "^1.1.4",
+    "istanbul": "^0.4.2",
+    "jsdoc": "^3.4.0",
+    "mocha": "^2.4.5",
+    "mocha-lcov-reporter": "^1.2.0",
+    "mongodb": "^2.1.7"
+  },
+  "dependencies": {
+    "utls": "^0.2.10"
+  }
+}
