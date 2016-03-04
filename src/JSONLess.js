@@ -3,11 +3,13 @@
  */
 "use strict";
 var utls = require('utls');
+var __handlers = {};
 /**
  * @author Michał Żaloudik <michal.zaloudik@redcart.pl>
  */
 class JSONLess {
 	/**
+	 * Parse JSON string
 	 * @static
 	 * @param text
 	 * @param reviver
@@ -24,6 +26,7 @@ class JSONLess {
 	}
 
 	/**
+	 * Converts JavaScript value to JSON string
 	 * @static
 	 * @param value
 	 * @param replacer
@@ -61,6 +64,21 @@ class JSONLess {
 			'Object'
 		].indexOf(utls.getType(v)) !== -1, _revive);
 	}
+
+	/**
+	 * Adds type handler
+	 * @static
+	 * @param {*} cls
+	 * @param {Function} replacer
+	 * @param {Function} reviver
+	 */
+	static addHandler(cls, replacer, reviver) {
+		__handlers[utls.getType(cls)] = {
+			cls : cls,
+			replacer : replacer,
+			reviver : reviver
+		};
+	}
 }
 /**
  *
@@ -72,17 +90,13 @@ class JSONLess {
  */
 function _replace(value, key, origin) {
 	var type = utls.getType(value);
-	switch (type) {
-		case 'Date':
-		case 'ObjectID':
-		case 'ObjectId':
-			value = {
-				'$type' : type,
-				'$value' : value.toString()
-			};
-			break;
-		default:
-			break;
+	console.log("Replace", type);
+	if (typeof __handlers[type] === 'object') {
+		value = {
+			$type : type,
+			$value : __handlers[type].replacer(__handlers[type].cls, value)
+		};
+		console.log(value);
 	}
 	return value;
 }
@@ -95,6 +109,7 @@ function _replace(value, key, origin) {
  * @private
  */
 function _revive(value, key, origin) {
+	console.log("Revive", utls.getType(value));
 	if (utls.getType(value) === 'Array') {
 		value.forEach((item, key) => {
 			if ([
@@ -111,17 +126,9 @@ function _revive(value, key, origin) {
 		});
 	} else {
 		if (value['$type'] !== undefined && value['$value'] !== undefined) {
-			switch (value['$type']) {
-				case 'ObjectID':
-				case 'ObjectId':
-					var ObjectID = require('mongodb').ObjectID;
-					value = new ObjectID(value['$value']);
-					break;
-				case 'Date':
-					value = new Date(value['$value']);
-					break;
-				default:
-					break;
+			if (typeof __handlers[value['$type']] === 'object') {
+				value = __handlers[value['$type']].reviver(__handlers[value['$type']].cls, value['$value']);
+				console.log(value);
 			}
 		} else {
 			Object.getOwnPropertyNames(value).forEach((key) => {
@@ -139,4 +146,10 @@ function _revive(value, key, origin) {
 	}
 	return value;
 }
+// Date
+JSONLess.addHandler(Date, (cls, value) => {
+	return value.toJSON();
+}, (cls, value) => {
+	return new cls(value);
+});
 module.exports = JSONLess;

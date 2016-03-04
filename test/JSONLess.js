@@ -4,10 +4,18 @@
 "use strict";
 var inspect = require('util').inspect, assert = require('assert'), mongodb = require('mongodb') ;
 var JSONLess = require(__dirname + '/../index.js');
+
 var date = new Date();
 var objId = new mongodb.ObjectID();
 date.setMilliseconds(0);
 describe('Various data', () => {
+	before(() => {
+		JSONLess.addHandler(mongodb.ObjectID, (cls, value) => {
+			return value.toString();
+		}, (cls, value) => {
+			return new cls(value);
+		});
+	});
 	var tests = [
 		null,
 		true,
@@ -55,7 +63,7 @@ describe('Various data', () => {
 	tests.forEach((test) => {
 		it('', () => {
 			var replaced = JSONLess.stringify(test);
-			//console.log(replaced);
+			console.log(replaced);
 			var revived = JSONLess.parse(replaced);
 			assert.deepEqual(revived, test);
 		});
