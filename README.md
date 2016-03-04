@@ -22,6 +22,7 @@ JSONLess.addHandler(Date, (cls, value) => {
 }, (cls, value) => {
 	return new cls(value);
 });
-``` now we have added support for Date type
+```
+now we have added support for Date type
 ### API docs
-See [github.io pages](http://ponury-kostek.github.io/json-less/) 
+See [JSONLess github.io pages](http://ponury-kostek.github.io/json-less/) 
