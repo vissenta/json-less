@@ -90,13 +90,11 @@ class JSONLess {
  */
 function _replace(value, key, origin) {
 	var type = utls.getType(value);
-	console.log("Replace", type);
 	if (typeof __handlers[type] === 'object') {
 		value = {
 			$type : type,
 			$value : __handlers[type].replacer(__handlers[type].cls, value)
 		};
-		console.log(value);
 	}
 	return value;
 }
@@ -109,7 +107,6 @@ function _replace(value, key, origin) {
  * @private
  */
 function _revive(value, key, origin) {
-	console.log("Revive", utls.getType(value));
 	if (utls.getType(value) === 'Array') {
 		value.forEach((item, key) => {
 			if ([
@@ -128,7 +125,6 @@ function _revive(value, key, origin) {
 		if (value['$type'] !== undefined && value['$value'] !== undefined) {
 			if (typeof __handlers[value['$type']] === 'object') {
 				value = __handlers[value['$type']].reviver(__handlers[value['$type']].cls, value['$value']);
-				console.log(value);
 			}
 		} else {
 			Object.getOwnPropertyNames(value).forEach((key) => {

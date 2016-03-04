@@ -63,7 +63,7 @@ describe('Various data', () => {
 	tests.forEach((test) => {
 		it('', () => {
 			var replaced = JSONLess.stringify(test);
-			console.log(replaced);
+			//console.log(replaced);
 			var revived = JSONLess.parse(replaced);
 			assert.deepEqual(revived, test);
 		});
