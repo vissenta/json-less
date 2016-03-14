@@ -77,7 +77,7 @@ describe('Circular protection', () => {
 			JSONLess.stringify(circular);
 		}, TypeError, 'Converting circular structure to JSONLess');
 	});
-	it('Circular object', () => {
+	it('Circular array', () => {
 		assert.throws(() => {
 			var circular = [];
 			circular.push(circular);
