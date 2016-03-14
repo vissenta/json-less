@@ -1,6 +1,6 @@
 {
   "name": "json-less",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "JSON",
   "main": "index.js",
   "scripts": {
@@ -28,6 +28,6 @@
     "mongodb": "^2.1.7"
   },
   "dependencies": {
-    "utls": "^0.2.10"
+    "utls": "^0.2.13"
   }
 }

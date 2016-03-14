@@ -20,7 +20,10 @@ class JSONLess {
 				'Array',
 				'Object'
 			].indexOf(utls.getType(value)) !== -1) {
-			value = JSONLess.revive(value);
+			value = utls.traverse(value, v => [
+				'Array',
+				'Object'
+			].indexOf(utls.getType(v)) !== -1, _revive);
 		}
 		return value;
 	}
@@ -33,36 +36,16 @@ class JSONLess {
 	 * @param space
 	 */
 	static stringify(value, replacer, space) {
-		if (utls.getType(value) === 'Array') {
-			value = JSONLess.replace(value);
-		} else if (typeof value === 'object') {
-			value = JSONLess.replace(value);
+		if(utls.isCircular(value)) {
+			throw new Error();
+		}
+		if (utls.getType(value) === 'Array' || typeof value === 'object') {
+			value = utls.traverse(value, v => [
+				'Array',
+				'Object'
+			].indexOf(utls.getType(v)) === -1, _replace);
 		}
 		return JSON.stringify(value, replacer, space)
-	}
-
-	/**
-	 * @static
-	 * @param value
-	 * @returns {*}
-	 */
-	static replace(value) {
-		return utls.traverse(value, v => [
-			'Array',
-			'Object'
-		].indexOf(utls.getType(v)) === -1, _replace);
-	}
-
-	/**
-	 * @static
-	 * @param value
-	 * @returns {*}
-	 */
-	static revive(value) {
-		return utls.traverse(value, v => [
-			'Array',
-			'Object'
-		].indexOf(utls.getType(v)) !== -1, _revive);
 	}
 
 	/**
@@ -84,7 +67,7 @@ class JSONLess {
  *
  * @param {*} value
  * @param {String|Number|undefined} key
- * @param {Array|Object} origin
+ * @param {Array|Object|undefined} origin
  * @returns {*}
  * @private
  */
@@ -102,7 +85,7 @@ function _replace(value, key, origin) {
  *
  * @param {*} value
  * @param {String|Number|undefined} key
- * @param {Array|Object} origin
+ * @param {Array|Object|undefined} origin
  * @returns {*}
  * @private
  */
