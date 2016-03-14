@@ -69,3 +69,19 @@ describe('Various data', () => {
 		});
 	});
 });
+describe('Circular protection', () => {
+	it('Circular object', () => {
+		assert.throws(() => {
+			var circular = {};
+			circular.circularRef = circular;
+			JSONLess.stringify(circular);
+		}, TypeError, 'Converting circular structure to JSONLess');
+	});
+	it('Circular object', () => {
+		assert.throws(() => {
+			var circular = [];
+			circular.push(circular);
+			JSONLess.stringify(circular);
+		}, TypeError, 'Converting circular structure to JSONLess');
+	});
+});

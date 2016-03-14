@@ -36,8 +36,8 @@ class JSONLess {
 	 * @param space
 	 */
 	static stringify(value, replacer, space) {
-		if(utls.isCircular(value)) {
-			throw new Error();
+		if (utls.isCircular(value)) {
+			throw new TypeError('Converting circular structure to JSONLess');
 		}
 		if (utls.getType(value) === 'Array' || typeof value === 'object') {
 			value = utls.traverse(value, v => [
