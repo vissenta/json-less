@@ -24,7 +24,8 @@
     "istanbul": "^0.4.2",
     "jsdoc": "^3.4.0",
     "mocha": "^2.4.5",
-    "mocha-lcov-reporter": "^1.2.0"
+    "mocha-lcov-reporter": "^1.2.0",
+    "mongodb": "^2.1.7"
   },
   "dependencies": {
     "utls": "^0.2.16"
