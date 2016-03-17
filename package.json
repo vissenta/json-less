@@ -1,6 +1,6 @@
 {
   "name": "json-less",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "JSON",
   "main": "index.js",
   "scripts": {
@@ -24,10 +24,9 @@
     "istanbul": "^0.4.2",
     "jsdoc": "^3.4.0",
     "mocha": "^2.4.5",
-    "mocha-lcov-reporter": "^1.2.0",
-    "mongodb": "^2.1.7"
+    "mocha-lcov-reporter": "^1.2.0"
   },
   "dependencies": {
-    "utls": "^0.2.13"
+    "utls": "^0.2.16"
   }
 }

@@ -2,12 +2,10 @@
  * @author Michał Żaloudik <michal.zaloudik@redcart.pl>
  */
 "use strict";
-var inspect = require('util').inspect, assert = require('assert'), mongodb = require('mongodb') ;
+var inspect = require('util').inspect, assert = require('assert'), mongodb = require('mongodb');
 var JSONLess = require(__dirname + '/../index.js');
-
 var date = new Date();
 var objId = new mongodb.ObjectID();
-date.setMilliseconds(0);
 describe('Various data', () => {
 	before(() => {
 		JSONLess.addHandler(mongodb.ObjectID, (cls, value) => {
@@ -20,6 +18,8 @@ describe('Various data', () => {
 		null,
 		true,
 		false,
+		[],
+		{},
 		-1,
 		0,
 		1,
@@ -60,10 +60,9 @@ describe('Various data', () => {
 			d : 'date'
 		}
 	];
-	tests.forEach((test) => {
-		it('', () => {
+	tests.forEach((test, key) => {
+		it('#' + key, () => {
 			var replaced = JSONLess.stringify(test);
-			//console.log(replaced);
 			var revived = JSONLess.parse(replaced);
 			assert.deepEqual(revived, test);
 		});

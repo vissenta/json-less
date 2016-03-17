@@ -39,11 +39,8 @@ class JSONLess {
 		if (utls.isCircular(value)) {
 			throw new TypeError('Converting circular structure to JSONLess');
 		}
-		if (utls.getType(value) === 'Array' || typeof value === 'object') {
-			value = utls.traverse(value, v => [
-				'Array',
-				'Object'
-			].indexOf(utls.getType(v)) === -1, _replace);
+		if (utls.getType(value) === 'Array' || (typeof value === 'object' && value !== null)) {
+			value = utls.map(value, _replace);
 		}
 		return JSON.stringify(value, replacer, space)
 	}
@@ -105,7 +102,7 @@ function _revive(value, key, origin) {
 			}
 		});
 	} else {
-		if (value['$type'] !== undefined && value['$value'] !== undefined) {
+		if (value && value['$type'] !== undefined && value['$value'] !== undefined) {
 			if (typeof __handlers[value['$type']] === 'object') {
 				value = __handlers[value['$type']].reviver(__handlers[value['$type']].cls, value['$value']);
 			}
