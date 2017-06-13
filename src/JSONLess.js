@@ -2,8 +2,8 @@
  * @author Michał Żaloudik <michal.zaloudik@redcart.pl>
  */
 "use strict";
-var utls = require('utls');
-var __handlers = {};
+const utls = require('utls');
+const __handlers = {};
 /**
  * @author Michał Żaloudik <michal.zaloudik@redcart.pl>
  */
@@ -15,7 +15,7 @@ class JSONLess {
 	 * @param reviver
 	 */
 	static parse(text, reviver) {
-		var value = JSON.parse(text, reviver);
+		let value = JSON.parse(text, reviver);
 		if ([
 				'Array',
 				'Object'
@@ -69,7 +69,7 @@ class JSONLess {
  * @private
  */
 function _replace(value, key, origin) {
-	var type = utls.getType(value);
+	const type = utls.getType(value);
 	if (typeof __handlers[type] === 'object') {
 		value = {
 			$type : type,

@@ -2,10 +2,10 @@
  * @author Michał Żaloudik <michal.zaloudik@redcart.pl>
  */
 "use strict";
-var inspect = require('util').inspect, assert = require('assert'), mongodb = require('mongodb');
-var JSONLess = require(__dirname + '/../index.js');
-var date = new Date();
-var objId = new mongodb.ObjectID();
+const assert = require('assert'), mongodb = require('mongodb');
+const JSONLess = require(__dirname + '/../index.js');
+const date = new Date();
+const objId = new mongodb.ObjectID();
 describe('Various data', () => {
 	before(() => {
 		JSONLess.addHandler(mongodb.ObjectID, (cls, value) => {
@@ -14,7 +14,7 @@ describe('Various data', () => {
 			return new cls(value);
 		});
 	});
-	var tests = [
+	const tests = [
 		null,
 		true,
 		false,
@@ -62,8 +62,8 @@ describe('Various data', () => {
 	];
 	tests.forEach((test, key) => {
 		it('#' + key, () => {
-			var replaced = JSONLess.stringify(test);
-			var revived = JSONLess.parse(replaced);
+			const replaced = JSONLess.stringify(test);
+			const revived = JSONLess.parse(replaced);
 			assert.deepEqual(revived, test);
 		});
 	});
@@ -71,14 +71,14 @@ describe('Various data', () => {
 describe('Circular protection', () => {
 	it('Circular object', () => {
 		assert.throws(() => {
-			var circular = {};
+			const circular = {};
 			circular.circularRef = circular;
 			JSONLess.stringify(circular);
 		}, TypeError, 'Converting circular structure to JSONLess');
 	});
 	it('Circular array', () => {
 		assert.throws(() => {
-			var circular = [];
+			const circular = [];
 			circular.push(circular);
 			JSONLess.stringify(circular);
 		}, TypeError, 'Converting circular structure to JSONLess');
