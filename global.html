@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>JSONLess Index</title>
+	<title>JSONLess Global</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -65,45 +65,512 @@
 		<div id="main">
 			
 
+	<h1 class="page-title">Global</h1>
+<section>
+
+<header>
+    
+        <h2>
+        
+        </h2>
+        
+    
+</header>
+
+
+<article>
+    <div class="container-overview">
+    
+        
+
+        
+<dl class="details">
+    
+
 	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
 	
 
 
 
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<hr>
+<dt>
+    <h4 class="name" id="addHandler"><span class="type-signature"></span>addHandler(cls, replacer, reviver)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Adds type handler
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>cls</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
 
 
 
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>replacer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
 
 
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>reviver</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
 
 	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="parse"><span class="type-signature"></span>parse(string)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Parse JSON string
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>string</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
 	
 
 
 
+	
+
+	
+
+	
+
+	
+</dl>
 
 
-    <section class="readme-section">
-        <article><h1>JSONLess</h1><p><a href="https://travis-ci.org/ponury-kostek/json-less"><img src="https://travis-ci.org/ponury-kostek/json-less.svg?branch=master" alt="Build Status"></a>
-<a href="https://coveralls.io/github/ponury-kostek/json-less?branch=master"><img src="https://coveralls.io/repos/github/ponury-kostek/json-less/badge.svg?branch=master" alt="Coverage Status"></a>
-<a href="https://badge.fury.io/js/json-less"><img src="https://badge.fury.io/js/json-less.svg" alt="npm version"></a>
-<a href=""><img src="https://img.shields.io/npm/dt/json-less.svg" alt="npm"></a></p>
-<h2>How it works</h2><p>JSONLess replaces objects like Date into <code>{$type: 'Date', $value : '2016-03-04T07:33:03.000Z'}</code> before value is stringify and after parse it will revive original object instance</p>
-<h2>Usage</h2><p>Use it exacly in the same way as regular JSON</p>
-<h3>stringify</h3><pre class="prettyprint source lang-javascript"><code>JSONLess.stringify({name : 'object with not scalar values', date : new Date()});
-// '{&quot;name&quot;:&quot;object with not scalar values&quot;,&quot;date&quot;:{&quot;$type&quot;:&quot;Date&quot;,&quot;$value&quot;:&quot;2016-03-04T07:33:03.000Z&quot;}}'</code></pre><h3>parse</h3><pre class="prettyprint source lang-javascript"><code>JSONLess.parse('{&quot;name&quot;:&quot;object with not scalar values&quot;,&quot;date&quot;:{&quot;$type&quot;:&quot;Date&quot;,&quot;$value&quot;:&quot;2016-03-04T07:33:03.000Z&quot;}}');
-// { name: 'object with not scalar values', date: Thu Mar 04 2016 08:33:03 GMT+0100 (CET) }</code></pre><h3>addHandler</h3><pre class="prettyprint source lang-javascript"><code>JSONLess.addHandler(Date, (cls, value) => {
-    return value.toJSON();
-}, (cls, value) => {
-    return new cls(value);
-});</code></pre><p>now we have added support for Date type</p>
-<h3>API docs</h3><p>See <a href="http://ponury-kostek.github.io/json-less/">JSONLess github.io pages</a></p></article>
-    </section>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="stringify"><span class="type-signature"></span>stringify(value)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Converts JavaScript value to JSON string
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
 
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
