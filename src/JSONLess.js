@@ -36,10 +36,11 @@ function parse(string) {
  */
 function replacer(key, value) {
 	const type = utls.getType(this[key]);
-	if (typeof __handlers[type] === 'object') {
+	const handler = __handlers[type];
+	if (handler !== undefined) {
 		return {
 			$type : type,
-			$value : __handlers[type].replacer(__handlers[type].cls, this[key])
+			$value : handler.replacer(handler.cls, this[key])
 		};
 	}
 	return value;
@@ -52,8 +53,9 @@ function replacer(key, value) {
  */
 function reviver(key, value) {
 	if (typeof value === 'object' && value !== null) {
-		if (value.$type && value.$value && __handlers[value.$type]) {
-			return __handlers[value.$type].reviver(__handlers[value.$type].cls, value.$value);
+		const handler = __handlers[value.$type];
+		if (value.$type && value.$value && handler) {
+			return handler.reviver(handler.cls, value.$value);
 		}
 	}
 	return value;
