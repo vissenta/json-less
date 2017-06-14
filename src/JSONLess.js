@@ -29,7 +29,7 @@ function parse(string) {
 	return JSON.parse(string, reviver);
 }
 /**
- *
+ * @private
  * @param key
  * @param value
  * @returns {*}
@@ -45,7 +45,7 @@ function replacer(key, value) {
 	return value;
 }
 /**
- *
+ * @private
  * @param key
  * @param value
  * @returns {*}
@@ -60,7 +60,6 @@ function reviver(key, value) {
 }
 /**
  * Adds type handler
- * @static
  * @param {*} cls
  * @param {Function} replacer
  * @param {Function} reviver
