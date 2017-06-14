@@ -1,6 +1,6 @@
 {
   "name": "json-less",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "JSON",
   "main": "index.js",
   "scripts": {
