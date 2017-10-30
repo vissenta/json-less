@@ -4,8 +4,75 @@
 "use strict";
 const assert = require('assert'), mongodb = require('mongodb');
 const JSONLess = require(__dirname + '/../index.js');
-const date = new Date();
-const objId = new mongodb.ObjectID();
+const date = new Date('2017-06-13T14:49:41.074Z');
+const objId = new mongodb.ObjectID('593ffb858dc15855cafc9373');
+const tests = [
+	null,
+	true,
+	false,
+	[],
+	{},
+	-1,
+	0,
+	1,
+	-1.23,
+	1.23,
+	"simple string",
+	[
+		1,
+		2,
+		3
+	],
+	{
+		a : 'a',
+		b : 'b'
+	},
+	date,
+	[
+		1,
+		date,
+		'c'
+	],
+	{
+		a : 'a',
+		b : 2,
+		date : date,
+		d : 'date'
+	},
+	objId,
+	[
+		1,
+		objId,
+		'c'
+	],
+	{
+		a : 'a',
+		b : 2,
+		oid : objId,
+		d : 'date'
+	}
+];
+const strings = [
+	'null',
+	'true',
+	'false',
+	'[]',
+	'{}',
+	'-1',
+	'0',
+	'1',
+	'-1.23',
+	'1.23',
+	'"simple string"',
+	'[1,2,3]',
+	'{"a":"a","b":"b"}',
+	'{"$type":"Date","$value":"2017-06-13T14:49:41.074Z"}',
+	'[1,{"$type":"Date","$value":"2017-06-13T14:49:41.074Z"},"c"]',
+	'{"a":"a","b":2,"date":{"$type":"Date","$value":"2017-06-13T14:49:41.074Z"},"d":"date"}',
+	'{"$type":"ObjectID","$value":"593ffb858dc15855cafc9373"}',
+	'[1,{"$type":"ObjectID","$value":"593ffb858dc15855cafc9373"},"c"]',
+	'{"a":"a","b":2,"oid":{"$type":"ObjectID","$value":"593ffb858dc15855cafc9373"},"d":"date"}'
+];
 describe('Various data', () => {
 	before(() => {
 		JSONLess.addHandler(mongodb.ObjectID, (cls, value) => {
@@ -14,57 +81,14 @@ describe('Various data', () => {
 			return new cls(value);
 		});
 	});
-	const tests = [
-		null,
-		true,
-		false,
-		[],
-		{},
-		-1,
-		0,
-		1,
-		-1.23,
-		1.23,
-		"simple string",
-		[
-			1,
-			2,
-			3
-		],
-		{
-			a : 'a',
-			b : 'b'
-		},
-		date,
-		[
-			1,
-			date,
-			'c'
-		],
-		{
-			a : 'a',
-			b : 2,
-			c : date,
-			d : 'date'
-		},
-		objId,
-		[
-			1,
-			objId,
-			'c'
-		],
-		{
-			a : 'a',
-			b : 2,
-			c : objId,
-			d : 'date'
-		}
-	];
 	tests.forEach((test, key) => {
-		it('#' + key, () => {
+		it('stringify #' + key, () => {
 			const replaced = JSONLess.stringify(test);
-			const revived = JSONLess.parse(replaced);
-			assert.deepEqual(revived, test);
+			assert.deepEqual(replaced, strings[key]);
+		});
+		it('parse #' + key, () => {
+			const revived = JSONLess.parse(strings[key]);
+			assert.deepEqual(revived, tests[key]);
 		});
 	});
 });

@@ -7,125 +7,75 @@ const __handlers = {};
 /**
  * @author Michał Żaloudik <michal.zaloudik@redcart.pl>
  */
-class JSONLess {
-	/**
-	 * Parse JSON string
-	 * @static
-	 * @param text
-	 * @param reviver
-	 */
-	static parse(text, reviver) {
-		let value = JSON.parse(text, reviver);
-		if ([
-				'Array',
-				'Object'
-			].indexOf(utls.getType(value)) !== -1) {
-			value = utls.traverse(value, v => [
-				'Array',
-				'Object'
-			].indexOf(utls.getType(v)) !== -1, _revive);
-		}
-		return value;
-	}
-
-	/**
-	 * Converts JavaScript value to JSON string
-	 * @static
-	 * @param value
-	 * @param replacer
-	 * @param space
-	 */
-	static stringify(value, replacer, space) {
-		if (utls.isCircular(value)) {
-			throw new TypeError('Converting circular structure to JSONLess');
-		}
-		if (utls.getType(value) === 'Array' || (typeof value === 'object' && value !== null)) {
-			value = utls.map(value, _replace);
-		}
-		return JSON.stringify(value, replacer, space)
-	}
-
-	/**
-	 * Adds type handler
-	 * @static
-	 * @param {*} cls
-	 * @param {Function} replacer
-	 * @param {Function} reviver
-	 */
-	static addHandler(cls, replacer, reviver) {
-		__handlers[utls.getType(cls)] = {
-			cls : cls,
-			replacer : replacer,
-			reviver : reviver
-		};
-	}
+module.exports = {
+	parse : parse,
+	stringify : stringify,
+	addHandler : addHandler
+};
+/**
+ * Converts JavaScript value to JSON string
+ * @static
+ * @param value
+ */
+function stringify(value) {
+	return JSON.stringify(value, replacer)
 }
 /**
- *
- * @param {*} value
- * @param {String|Number|undefined} key
- * @param {Array|Object|undefined} origin
- * @returns {*}
- * @private
+ * Parse JSON string
+ * @static
+ * @param string
  */
-function _replace(value, key, origin) {
-	const type = utls.getType(value);
-	if (typeof __handlers[type] === 'object') {
-		value = {
+function parse(string) {
+	return JSON.parse(string, reviver);
+}
+/**
+ * @private
+ * @param key
+ * @param value
+ * @returns {*}
+ */
+function replacer(key, value) {
+	const type = utls.getType(this[key]);
+	const handler = __handlers[type];
+	if (handler !== undefined) {
+		return {
 			$type : type,
-			$value : __handlers[type].replacer(__handlers[type].cls, value)
+			$value : handler.replacer(handler.cls, this[key])
 		};
 	}
 	return value;
 }
 /**
- *
- * @param {*} value
- * @param {String|Number|undefined} key
- * @param {Array|Object|undefined} origin
- * @returns {*}
  * @private
+ * @param key
+ * @param value
+ * @returns {*}
  */
-function _revive(value, key, origin) {
-	if (utls.getType(value) === 'Array') {
-		value.forEach((item, key) => {
-			if ([
-					'Array',
-					'Object'
-				].indexOf(utls.getType(item)) !== -1) {
-				value[key] = utls.traverse(item, v => [
-					'Array',
-					'Object'
-				].indexOf(utls.getType(v)) !== -1, _revive);
-			} else {
-				value[key] = item;
-			}
-		});
-	} else {
-		if (value && value['$type'] !== undefined && value['$value'] !== undefined) {
-			if (typeof __handlers[value['$type']] === 'object') {
-				value = __handlers[value['$type']].reviver(__handlers[value['$type']].cls, value['$value']);
-			}
-		} else {
-			Object.getOwnPropertyNames(value).forEach((key) => {
-				if ([
-						'Array',
-						'Object'
-					].indexOf(utls.getType(value[key])) !== -1) {
-					value[key] = utls.traverse(value[key], v => [
-						'Array',
-						'Object'
-					].indexOf(utls.getType(v)) !== -1, _revive);
-				}
-			});
+function reviver(key, value) {
+	if (typeof value === 'object' && value !== null) {
+		const handler = __handlers[value.$type];
+		if (value.$type && value.$value && handler) {
+			return handler.reviver(handler.cls, value.$value);
 		}
 	}
 	return value;
+}
+/**
+ * Adds type handler
+ * @param {*} cls
+ * @param {Function} replacer
+ * @param {Function} reviver
+ */
+function addHandler(cls, replacer, reviver) {
+	__handlers[utls.getType(cls)] = {
+		cls : cls,
+		replacer : replacer,
+		reviver : reviver
+	};
 }
 // Date
-JSONLess.addHandler(Date, (cls, value) => {
+addHandler(Date, (cls, value) => {
 	return value.toJSON();
 }, (cls, value) => {
 	return new cls(value);
 });
-module.exports = JSONLess;
