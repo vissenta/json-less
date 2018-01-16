@@ -29,6 +29,5 @@
     "mongodb": "^2.2.28"
   },
   "dependencies": {
-    "utls": "^0.3.0"
   }
 }

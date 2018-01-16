@@ -25,8 +25,8 @@ const values = [
 		3
 	],
 	{
-		a : 'a',
-		b : 'b'
+		a: 'a',
+		b: 'b'
 	},
 	date,
 	[
@@ -35,10 +35,10 @@ const values = [
 		'c'
 	],
 	{
-		a : 'a',
-		b : 2,
-		c : date,
-		d : 'date'
+		a: 'a',
+		b: 2,
+		c: date,
+		d: 'date'
 	},
 	objId,
 	[
@@ -47,13 +47,12 @@ const values = [
 		'c'
 	],
 	{
-		a : 'a',
-		b : 2,
-		c : objId,
-		d : 'date'
+		a: 'a',
+		b: 2,
+		c: objId,
+		d: 'date'
 	}
 ];
-const length = values.length;
 const strings = [
 	'null',
 	'true',
@@ -75,23 +74,23 @@ const strings = [
 	'[1,"593ffb858dc15855cafc9373","c"]',
 	'{"a":"a","b":2,"c":"593ffb858dc15855cafc9373","d":"date"}'
 ];
-
-suite.add('JSONLess.stringify', function () {
-	for (var i = 0; i < length; i++) {
-		JSONLess.stringify(values[i]);
-	}
-}).add('JSONLess.parse', function () {
-	for (var i = 0; i < length; i++) {
-		JSONLess.parse(strings[i]);
-	}
-}).add('JSON.stringify', function () {
-	for (var i = 0; i < length; i++) {
+const length = strings.length;
+suite.add('JSON.stringify', function () {
+	for (let i = 0; i < length; i++) {
 		JSON.stringify(values[i]);
 	}
+}).add('JSONLess.stringify', function () {
+	for (let i = 0; i < length; i++) {
+		JSONLess.stringify(values[i]);
+	}
 }).add('JSON.parse', function () {
-	for (var i = 0; i < length; i++) {
+	for (let i = 0; i < length; i++) {
 		JSON.parse(strings[i]);
+	}
+}).add('JSONLess.parse', function () {
+	for (let i = 0; i < length; i++) {
+		JSONLess.parse(strings[i]);
 	}
 }).on('cycle', function (event) {
 	console.log(String(event.target));
-}).run({'async' : true});
+}).run({'async': true});
