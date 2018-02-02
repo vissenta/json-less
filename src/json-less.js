@@ -25,12 +25,12 @@ let parse_text;
 
 function parse_next(c) {
 
-// If a c parameter is provided, verify that it matches the current character.
+	// If a c parameter is provided, verify that it matches the current character.
 	if (c && c !== parse_ch) {
 		parse_error("Expected '" + c + "' instead of '" + parse_ch + "'");
 	}
-// Get the next character. When there are no more characters,
-// return the empty string.
+	// Get the next character. When there are no more characters,
+	// return the empty string.
 	parse_ch = parse_text.charAt(parse_at);
 	parse_at += 1;
 	return parse_ch;
@@ -250,9 +250,7 @@ function parse_value() {
 		case "-":
 			return parse_number();
 		default:
-			return (parse_ch >= "0" && parse_ch <= "9")
-				? parse_number()
-				: parse_word();
+			return (parse_ch >= "0" && parse_ch <= "9") ? parse_number() : parse_word();
 	}
 }
 
@@ -303,8 +301,8 @@ addHandler(Date, (cls, value) => {
 }, (cls, value) => {
 	return new cls(value);
 });
-
 let stringify_stack = [];
+
 /**
  * Converts JavaScript value to JSON string
  * @static
@@ -333,14 +331,10 @@ const stringify_meta = {
  */
 function stringify_quote(string) {
 	stringify_rx_escapable.lastIndex = 0;
-	return stringify_rx_escapable.test(string)
-		? "\"" + string.replace(stringify_rx_escapable, function (a) {
+	return stringify_rx_escapable.test(string) ? "\"" + string.replace(stringify_rx_escapable, function (a) {
 		const c = stringify_meta[a];
-		return typeof c === "string"
-			? c
-			: "\\u" + ("0000" + a.charCodeAt(0).toString(16)).slice(-4);
-	}) + "\""
-		: "\"" + string + "\"";
+		return typeof c === "string" ? c : "\\u" + ("0000" + a.charCodeAt(0).toString(16)).slice(-4);
+	}) + "\"" : "\"" + string + "\"";
 }
 
 /**
@@ -371,9 +365,7 @@ function stringify_str(key, holder) {
 		case "string":
 			return stringify_quote(value);
 		case "number":
-			return isFinite(value)
-				? String(value)
-				: "null";
+			return isFinite(value) ? String(value) : "null";
 		case "boolean":
 		case "null":
 			return String(value);
@@ -382,7 +374,7 @@ function stringify_str(key, holder) {
 				return "null";
 			}
 			if (~stringify_stack.indexOf(value)) {
-				throw new TypeError('Converting circular structure to JSONLess');
+				throw new TypeError("Converting circular structure to JSONLess");
 			}
 			stringify_stack.push(value);
 			if (value instanceof Array) {

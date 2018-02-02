@@ -2,4 +2,4 @@
  * @author Michał Żaloudik <michal.zaloudik@redcart.pl>
  */
 "use strict";
-module.exports = require('./src/JSONLess.js');
+module.exports = require('./src/json-less.js');
