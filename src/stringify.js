@@ -15,30 +15,6 @@ function stringify(value) {
 	return stringify_str("", {"": value});
 }
 
-const stringify_rx_escapable = /[\\"\u0000-\u001f\u007f-\u009f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g;
-const stringify_meta = {
-	"\b": "\\b",
-	"\t": "\\t",
-	"\n": "\\n",
-	"\f": "\\f",
-	"\r": "\\r",
-	"\"": "\\\"",
-	"\\": "\\\\"
-};
-
-/**
- *
- * @param string
- * @returns {string}
- */
-function stringify_quote(string) {
-	stringify_rx_escapable.lastIndex = 0;
-	return stringify_rx_escapable.test(string) ? "\"" + string.replace(stringify_rx_escapable, function (a) {
-		const c = stringify_meta[a];
-		return typeof c === "string" ? c : "\\u" + ("0000" + a.charCodeAt(0).toString(16)).slice(-4);
-	}) + "\"" : "\"" + string + "\"";
-}
-
 /**
  *
  * @param key
@@ -65,7 +41,7 @@ function stringify_str(key, holder) {
 	}
 	switch (typeof value) {
 		case "string":
-			return stringify_quote(value);
+			return JSON.stringify(value);
 		case "number":
 			return isFinite(value) ? String(value) : "null";
 		case "boolean":
@@ -100,7 +76,7 @@ function stringify_str(key, holder) {
 				i += 1;
 				v = stringify_str(k, value);
 				if (v) {
-					_v += stringify_quote(k) + ":" + v;
+					_v += JSON.stringify(k) + ":" + v;
 					if (i < length) {
 						_v += ",";
 					}
