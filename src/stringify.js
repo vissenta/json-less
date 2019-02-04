@@ -3,7 +3,7 @@
  */
 "use strict";
 const __handlers = require("./json-less").__handlers;
-let stringify_stack = [];
+let depth = 0;
 
 /**
  * Converts JavaScript value to JSON string
@@ -11,7 +11,7 @@ let stringify_stack = [];
  * @param value
  */
 function stringify(value) {
-	stringify_stack = [];
+	depth = 0;
 	return stringify_str("", {"": value});
 }
 
@@ -75,10 +75,10 @@ function stringify_str(key, holder) {
 			if (!value) {
 				return "null";
 			}
-			if (~stringify_stack.indexOf(value)) {
+			if (depth > 512) {
 				throw new TypeError("Converting circular structure to JSONLess");
 			}
-			stringify_stack.push(value);
+			depth += 1;
 			if (value instanceof Array) {
 				length = value.length;
 				v = "";
@@ -89,7 +89,7 @@ function stringify_str(key, holder) {
 						v += ",";
 					}
 				}
-				stringify_stack.pop();
+				depth -= 1;
 				return "[" + v + "]";
 			}
 			let _v = "";
@@ -106,7 +106,7 @@ function stringify_str(key, holder) {
 					}
 				}
 			}
-			stringify_stack.pop();
+			depth -= 1;
 			return "{" + _v + "}";
 	}
 }
