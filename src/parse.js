@@ -18,7 +18,6 @@ let parse_ch;     // The current character
 let parse_text;
 
 function parse_next(c) {
-
 	// If a c parameter is provided, verify that it matches the current character.
 	if (c && c !== parse_ch) {
 		parse_error("Expected '" + c + "' instead of '" + parse_ch + "'");
@@ -214,6 +213,9 @@ function parse_object() {
 			if (parse_ch === "}") {
 				parse_next("}");
 				if (obj.$type) {
+					if (obj.$type === "Infinity") {
+						return obj.$value === "-" ? -Infinity : Infinity;
+					}
 					const handler = __handlers[obj.$type];
 					if (handler !== undefined) {
 						return handler.reviver(handler.cls, obj.$value);

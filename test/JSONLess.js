@@ -51,7 +51,9 @@ const tests = [
 		oid: objId,
 		d: "date"
 	},
-	/so\/me/i
+	/so\/me/i,
+	Infinity,
+	-Infinity
 ];
 const strings = [
 	'null',
@@ -73,7 +75,9 @@ const strings = [
 	'{"$type":"ObjectID","$value":"593ffb858dc15855cafc9373"}',
 	'[1,{"$type":"ObjectID","$value":"593ffb858dc15855cafc9373"},"c"]',
 	'{"a":"a","b":2,"oid":{"$type":"ObjectID","$value":"593ffb858dc15855cafc9373"},"d":"date"}',
-	'{"$type":"RegExp","$value":{"pattern":"so\\\\/me","flags":"i"}}'
+	'{"$type":"RegExp","$value":{"pattern":"so\\\\/me","flags":"i"}}',
+	'{"$type":"Infinity","$value":"+"}',
+	'{"$type":"Infinity","$value":"-"}'
 ];
 describe("Various data", () => {
 	before(() => {

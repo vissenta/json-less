@@ -51,46 +51,44 @@ function stringify_str(key, holder) {
 	let v;          // The member value.
 	let length;
 	let value = holder[key];
-	if (value && typeof value === "object") {
-		const type = value.constructor.name;
-		const handler = __handlers[type];
-		if (handler !== undefined) {
-			value = {
-				$type: type,
-				$value: handler.replacer(handler.cls, value)
-			};
-		} else if (typeof value.toJSON === "function") {
-			value = value.toJSON(key);
-		}
-	}
 	switch (typeof value) {
 		case "string":
 			return stringify_quote(value);
 		case "number":
-			return isFinite(value) ? String(value) : "null";
+			return isFinite(value) ? String(value) : (value === value ? "{\"$type\":\"Infinity\",\"$value\":\"" + (value === -Infinity ? "-" : "+") + "\"}" : "null");
 		case "boolean":
-		case "null":
-			return String(value);
+			return value === true ? "true" : "false";
 		case "object":
 			if (!value) {
 				return "null";
 			}
-			if (depth > 512) {
+			if (depth === 512) {
 				throw new TypeError("Converting circular structure to JSONLess");
 			}
 			depth += 1;
-			if (value instanceof Array) {
-				length = value.length;
-				v = "";
-				for (i = 0; i < length;) {
-					v += stringify_str(i, value) || "null";
-					i += 1;
-					if (i < length) {
-						v += ",";
+			if (value.constructor) {
+				const type = value.constructor.name;
+				if (__handlers.hasOwnProperty(type)) {
+					const handler = __handlers[type];
+					value = {
+						$type: type,
+						$value: handler.replacer(handler.cls, value)
+					};
+				} else if (typeof value.toJSON === "function") {
+					return stringify_quote(value.toJSON());
+				} else if (value instanceof Array) {
+					length = value.length;
+					v = "";
+					for (i = 0; i < length;) {
+						v += stringify_str(i, value) || "null";
+						i += 1;
+						if (i < length) {
+							v += ",";
+						}
 					}
+					depth -= 1;
+					return "[" + v + "]";
 				}
-				depth -= 1;
-				return "[" + v + "]";
 			}
 			let _v = "";
 			const keys = Object.keys(value);
@@ -100,7 +98,7 @@ function stringify_str(key, holder) {
 				i += 1;
 				v = stringify_str(k, value);
 				if (v) {
-					_v += stringify_quote(k) + ":" + v;
+					_v += "\"" + k + "\":" + v;
 					if (i < length) {
 						_v += ",";
 					}
