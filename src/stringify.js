@@ -75,7 +75,7 @@ function stringify_str(key, holder) {
 						$value: handler.replacer(handler.cls, value)
 					};
 				} else if (typeof value.toJSON === "function") {
-					return stringify_quote(value.toJSON());
+					return stringify_str("", {"": value.toJSON()});
 				} else if (value instanceof Array) {
 					length = value.length;
 					v = "";
