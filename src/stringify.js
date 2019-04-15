@@ -79,11 +79,13 @@ function stringify_str(key, holder) {
 				} else if (value instanceof Array) {
 					length = value.length;
 					v = "";
-					for (i = 0; i < length;) {
-						v += stringify_str(i, value) || "null";
-						i += 1;
-						if (i < length) {
-							v += ",";
+					for (i = 0; i < length; i += 1) {
+						const _v = stringify_str(i, value) || "null";
+						if (_v) {
+							if (i) {
+								v += ",";
+							}
+							v += _v;
 						}
 					}
 					depth -= 1;
@@ -93,15 +95,14 @@ function stringify_str(key, holder) {
 			let _v = "";
 			const keys = Object.keys(value);
 			length = keys.length;
-			for (i = 0; i < length;) {
+			for (i = 0; i < length; i += 1) {
 				k = keys[i];
-				i += 1;
 				v = stringify_str(k, value);
 				if (v) {
-					_v += "\"" + k + "\":" + v;
-					if (i < length) {
+					if (i) {
 						_v += ",";
 					}
+					_v += "\"" + k + "\":" + v;
 				}
 			}
 			depth -= 1;
