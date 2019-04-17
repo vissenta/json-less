@@ -95,12 +95,15 @@ function stringify_str(key, holder) {
 			let _v = "";
 			const keys = Object.keys(value);
 			length = keys.length;
+			let first = true;
 			for (i = 0; i < length; i += 1) {
 				k = keys[i];
 				v = stringify_str(k, value);
 				if (v) {
-					if (i) {
+					if (!first) {
 						_v += ",";
+					} else {
+						first = false;
 					}
 					_v += "\"" + k + "\":" + v;
 				}
