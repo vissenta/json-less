@@ -2,7 +2,7 @@
  * @author Michał Żaloudik <ponury.kostek@gmail.com>
  */
 "use strict";
-const __handlers = require("./json-less").__handlers;
+const __handlers = require("./handlers").__handlers;
 const parse_escapee = {
 	"\"": "\"",
 	"\\": "\\",
